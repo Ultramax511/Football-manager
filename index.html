@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Match Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>⚽ Match Manager</h1>
+
+  <section id="home">
+    <button onclick="showSection('recorder')">📋 Match Recorder</button>
+    <button onclick="showSection('profile')">👥 Team Profile</button>
+    <button onclick="showSection('history')">📜 Match History</button>
+  </section>
+
+  <section id="recorder" class="hidden">
+    <h2>Record Match</h2>
+    <input id="team1" placeholder="Team 1">
+    <input id="team2" placeholder="Team 2">
+    <select id="matchType">
+      <option value="mixed">Mixed Match</option>
+      <option value="pure">Pure Team Match</option>
+    </select>
+    <input id="date" type="date">
+    <button onclick="addMatch()">Save Match</button>
+    <button onclick="showSection('home')">🔙 Back</button>
+  </section>
+
+  <section id="profile" class="hidden">
+    <h2>Team Profile</h2>
+    <div id="playerSlots"></div>
+    <button onclick="addPlayerSlot()">➕ Add Player</button>
+    <button onclick="showSection('home')">🔙 Back</button>
+  </section>
+
+  <section id="history" class="hidden">
+    <h2>Match History</h2>
+    <ul id="matchList"></ul>
+    <button onclick="showSection('home')">🔙 Back</button>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
