@@ -1,44 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Match Manager</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Robin's XSS Comment Detector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #222;
+    }
+
+    textarea {
+      width: 80%;
+      height: 100px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      background-color: #222;
+      color: white;
+      cursor: pointer;
+    }
+
+    #commentOutput {
+      margin-top: 30px;
+      text-align: left;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .comment {
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-left: 5px solid #444;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
-  <h1>⚽ Match Manager</h1>
 
-  <section id="home">
-    <button onclick="showSection('recorder')">📋 Match Recorder</button>
-    <button onclick="showSection('profile')">👥 Team Profile</button>
-    <button onclick="showSection('history')">📜 Match History</button>
-  </section>
+  <h1>Robin's 🔥 Comment Zone</h1>
+  <p>Type anything. Even evil scripts... if you dare 😈</p>
 
-  <section id="recorder" class="hidden">
-    <h2>Record Match</h2>
-    <input id="team1" placeholder="Team 1">
-    <input id="team2" placeholder="Team 2">
-    <select id="matchType">
-      <option value="mixed">Mixed Match</option>
-      <option value="pure">Pure Team Match</option>
-    </select>
-    <input id="date" type="date">
-    <button onclick="addMatch()">Save Match</button>
-    <button onclick="showSection('home')">🔙 Back</button>
-  </section>
+  <textarea id="commentInput" placeholder="Say something... or summon the void."></textarea><br>
+  <button onclick="postComment()">Post Comment</button>
 
-  <section id="profile" class="hidden">
-    <h2>Team Profile</h2>
-    <div id="playerSlots"></div>
-    <button onclick="addPlayerSlot()">➕ Add Player</button>
-    <button onclick="showSection('home')">🔙 Back</button>
-  </section>
+  <div id="commentOutput"></div>
 
-  <section id="history" class="hidden">
-    <h2>Match History</h2>
-    <ul id="matchList"></ul>
-    <button onclick="showSection('home')">🔙 Back</button>
-  </section>
+  <script>
+    function postComment() {
+      const input = document.getElementById("commentInput").value;
+      const output = document.getElementById("commentOutput");
 
-  <script src="script.js"></script>
+      // === XSS Detection Patterns ===
+      const xssPatterns = [
+        /<script.*?>.*?<\/script>/i,
+        /on\w+=".*?"/i,
+        /javascript:/i,
+        /<.*?on\w+=.*?>/i
+      ];
+
+      const detected = xssPatterns.some(pattern => pattern.test(input));
+
+      if (detected) {
+        alert("⚠️ XSS Detected! Robin, you chaotic genius.");
+      }
+
+      // Display comment (raw HTML — vulnerable by design)
+      const commentDiv = document.createElement("div");
+      commentDiv.className = "comment";
+      commentDiv.innerHTML = input;
+      output.appendChild(commentDiv);
+
+      // Clear input
+      document.getElementById("commentInput").value = "";
+    }
+  </script>
+
 </body>
 </html>
