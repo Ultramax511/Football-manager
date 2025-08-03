@@ -1,64 +1,91 @@
-let matches = [];
-let playerSlots = [];
+// === GLOBAL STORAGE ===
+const matches = [];
+const players = [];
+const comments = [];
 
+// === SECTION SWITCHING ===
 function showSection(id) {
-  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+  document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
   document.getElementById(id).classList.remove("hidden");
 
   if (id === 'history') renderHistory();
-  if (id === 'profile') renderPlayerSlots();
+  if (id === 'profile') renderPlayers();
+  if (id === 'comments') renderComments();
 }
 
+// === MATCH RECORDER ===
 function addMatch() {
-  const team1 = document.getElementById("team1").value;
-  const team2 = document.getElementById("team2").value;
-  const type = document.getElementById("matchType").value;
+  const team1 = document.getElementById("team1").value.trim();
+  const team2 = document.getElementById("team2").value.trim();
+  const matchType = document.getElementById("matchType").value;
   const date = document.getElementById("date").value;
 
-  matches.push({ team1, team2, type, date });
-  alert("Match Saved!");
+  if (!team1 || !team2 || !date) {
+    alert("Please fill in all fields!");
+    return;
+  }
+
+  matches.push({ team1, team2, matchType, date });
+  alert("Match recorded!");
+  clearInputs();
+}
+
+function clearInputs() {
   document.getElementById("team1").value = "";
   document.getElementById("team2").value = "";
   document.getElementById("date").value = "";
 }
 
+// === MATCH HISTORY ===
 function renderHistory() {
   const list = document.getElementById("matchList");
   list.innerHTML = "";
+
   matches.forEach((match, i) => {
+    const item = document.createElement("li");
+    item.textContent = `${match.date}: ${match.team1} vs ${match.team2} [${match.matchType}]`;
+    list.appendChild(item);
+  });
+}
+
+// === TEAM PROFILE ===
+function addPlayerSlot() {
+  const name = prompt("Enter player's name:");
+  if (name) {
+    players.push(name);
+    renderPlayers();
+  }
+}
+
+function renderPlayers() {
+  const slotDiv = document.getElementById("playerSlots");
+  slotDiv.innerHTML = "";
+
+  players.forEach((p, i) => {
+    const tag = document.createElement("div");
+    tag.textContent = `Player ${i + 1}: ${p}`;
+    slotDiv.appendChild(tag);
+  });
+}
+
+// === COMMENT SYSTEM ===
+function addComment() {
+  const commentInput = document.getElementById("commentInput");
+  const comment = commentInput.value.trim();
+  if (comment) {
+    comments.push(comment);
+    commentInput.value = "";
+    renderComments();
+  }
+}
+
+function renderComments() {
+  const list = document.getElementById("commentList");
+  list.innerHTML = "";
+
+  comments.forEach((text, i) => {
     const li = document.createElement("li");
-    li.innerHTML = `${match.date} – ${match.type.toUpperCase()}: ${match.team1} vs ${match.team2} 
-    <button onclick="deleteMatch(${i})">🗑</button>`;
+    li.textContent = text;
     list.appendChild(li);
   });
-}
-
-function deleteMatch(index) {
-  matches.splice(index, 1);
-  renderHistory();
-}
-
-function addPlayerSlot() {
-  playerSlots.push({ name: "", position: "", remark: "" });
-  renderPlayerSlots();
-}
-
-function deletePlayer(index) {
-  playerSlots.splice(index, 1);
-  renderPlayerSlots();
-}
-
-function renderPlayerSlots() {
-  const container = document.getElementById("playerSlots");
-  container.innerHTML = "";
-  playerSlots.forEach((player, i) => {
-    container.innerHTML += `
-      <div class="player-slot">
-        <input placeholder="Name" value="${player.name}" oninput="playerSlots[${i}].name=this.value">
-        <input placeholder="Position" value="${player.position}" oninput="playerSlots[${i}].position=this.value">
-        <input placeholder="Remark" value="${player.remark}" oninput="playerSlots[${i}].remark=this.value">
-        <button class="delete-btn" onclick="deletePlayer(${i})">Remove</button>
-      </div>
-    `;
-  });
-}
+  }
