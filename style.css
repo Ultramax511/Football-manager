@@ -1,44 +1,57 @@
 body {
-  font-family: sans-serif;
-  background: #f0f0f0;
-  text-align: center;
+  font-family: Arial, sans-serif;
+  background: #fdfdfd;
+  color: #333;
   padding: 20px;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+section {
+  margin-top: 20px;
+}
+
+input, select, textarea, button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
 button {
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  background: #333;
+  background-color: #2980b9;
   color: white;
-  border-radius: 5px;
   cursor: pointer;
+  transition: 0.3s;
+  border: none;
+}
+
+button:hover {
+  background-color: #1c5982;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  background: #ecf0f1;
+  padding: 10px;
+  margin: 5px auto;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 6px;
+  font-size: 0.95em;
 }
 
 .hidden {
   display: none;
-}
-
-input, select {
-  margin: 5px;
-  padding: 8px;
-  width: 200px;
-}
-
-.player-slot {
-  border: 1px solid #ccc;
-  background: white;
-  margin: 5px auto;
-  padding: 10px;
-  width: 300px;
-}
-
-.player-slot input {
-  width: 90%;
-  margin-bottom: 5px;
-}
-
-.delete-btn {
-  background: red;
-  margin-top: 5px;
 }
